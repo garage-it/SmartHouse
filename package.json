@@ -4,9 +4,9 @@
   "description": "Smart House",
   "scripts": {
     "start": "npm-run-all --parallel frontend backend broker",
-    "frontend": "smart-house-frontend",
-    "backend": "smart-house-backend",
-    "broker": "smart-house-broker"
+    "frontend": "cd node_modules/smart-house-frontend && smart-house-frontend",
+    "backend": "cd node_modules/smart-house-backend && smart-house-backend",
+    "broker": "cd node_modules/smart-house-broker && smart-house-broker"
   },
   "repository": {
     "type": "git",
