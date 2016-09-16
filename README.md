@@ -7,7 +7,6 @@ Installation:
 
 Install pm2 globally
 ```sh
-# Will download dependencies and will build frontend part
 $ npm install pm2 -g
 ```
 
