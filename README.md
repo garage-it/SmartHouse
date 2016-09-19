@@ -4,6 +4,7 @@ Installation:
 * install mongodb & pm2
 * install all required dependencies
 * configure enviroment (If default configuration is not suitable)
+* run mongodb
 * run the script
 
 Install pm2 globally
@@ -17,19 +18,29 @@ Install minimal required project dependencies:
 $ npm install --production
 ```
 
+To start mongodb:
+```sh
+$ sudo service mongodb start
+```
+
 To start backend:
 ```sh
 $ npm start
 ```
 
-To start backend in mock mode:
+Start options:
+    --mock -will start broker with mock data
+    --port <n> -will start backend on specified port (8080 is default)
+    --node -will start jobs via node, but not pm2
+
+Example (start backend with mock data):
 ```sh
 $ npm start -- --mock
 ```
 
-To start backend via node exec:
+To get list of all options start backend via node exec:
 ```sh
-$ npm start -- --node
+$ npm run index
 ```
 
 To stop backend:

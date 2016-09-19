@@ -36,10 +36,11 @@ var SH_MQTT_USER_NAME;
 var SH_MQTT_PASSWORD;
 
 program
-    .command('start [port]')
+    .command('start [options]')
     .description('start backend')
-    .option('-m, --mock', 'will use mock data')
+    .option('-m, --mock', 'will start broker with mock data')
     .option('-n, --node', 'will start jobs via node, but not pm2')
+    .option('-p, --port <n>', 'will start backend on specified port (8080 is default)', parseInt)
     .action(startAction);
 
 function startAction(cmd, options) {
@@ -48,10 +49,9 @@ function startAction(cmd, options) {
     process.env['ENV_CONFIG'] = 'production';
 
     var port = SH_WEB_PORT;
-    if (program.args[0] && isFinite(parseInt(program.args[0])) ) {
-        port = program.args[0];
+    if (options.port && isFinite(parseInt(options.port))) {
+        port = options.port;
     }
-
     // set port to serve the backend
     process.env['SH_WEB_PORT'] = port;
 
