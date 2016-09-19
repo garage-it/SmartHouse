@@ -24,7 +24,12 @@ $ npm start
 
 To start backend in mock mode:
 ```sh
-$ npm run start-mock
+$ npm start -- --mock
+```
+
+To start backend via node exec:
+```sh
+$ npm start -- --node
 ```
 
 To stop backend:

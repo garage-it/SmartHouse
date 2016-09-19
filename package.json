@@ -6,7 +6,6 @@
   "bin": "bin/index.js",
   "scripts": {
     "start": "node ./index.js start",
-    "start-mock": "node ./index.js start --mock",
     "stop": "node ./index.js stop",
     "restart": "node ./index.js restart",
     "status": "node ./index.js status",
@@ -32,7 +31,7 @@
   "dependencies": {
     "commander": "^2.9.0",
     "shelljs": "^0.7.0",
-    "dotenv": "^2.0.0", 
+    "dotenv": "^2.0.0",
 
     "smart-house-backend": "github:garage-it/SmartHouse-backend",
     "smart-house-broker": "github:garage-it/SmartHouse-broker",

@@ -19,26 +19,27 @@ const SH_PM2_BACKEND_NAME = 'smart-house-backend';
 const SH_PM2_BROKER_NAME = 'smart-house-broker';
 
 // Mongo DB configuration
-let SH_MONGO_DB;
+var SH_MONGO_DB;
 
 // PATH to other libraries distribution
-let SH_PATH_FRONTENT_DIST;
-let SH_PATH_BACKEND_CMD;
-let SH_PATH_BROKER_CMD;
+var SH_PATH_FRONTENT_DIST;
+var SH_PATH_BACKEND_CMD;
+var SH_PATH_BROKER_CMD;
 
 // WEB Configuration
-let SH_WEB_PORT;
+var SH_WEB_PORT;
 
 // MQTT Configuration
-let SH_MQTT_PORT;
-let SH_MQTT_HOST_NAME;
-let SH_MQTT_USER_NAME;
-let SH_MQTT_PASSWORD;
+var SH_MQTT_PORT;
+var SH_MQTT_HOST_NAME;
+var SH_MQTT_USER_NAME;
+var SH_MQTT_PASSWORD;
 
 program
     .command('start [port]')
     .description('start backend')
     .option('-m, --mock', 'will use mock data')
+    .option('-n, --node', 'will start jobs via node, but not pm2')
     .action(startAction);
 
 function startAction(cmd, options) {
@@ -55,14 +56,27 @@ function startAction(cmd, options) {
     process.env['SH_WEB_PORT'] = port;
 
     //start-backend
-    exec('pm2 start ' + SH_PATH_BACKEND_CMD + ' --name ' + SH_PM2_BACKEND_NAME);
-
-    //start-broker
-    var cmd = 'pm2 start ' + SH_PATH_BROKER_CMD + ' --name ' + SH_PM2_BROKER_NAME;
-    // start broker in mock mode ?
-    if (options.mock) {
-        cmd += ' -- --mock';
+    if (options.node) {
+        console.log('command :', 'node ' + SH_PATH_BACKEND_CMD);
+        exec('node ' + SH_PATH_BACKEND_CMD);
+    } else {
+        exec('pm2 start ' + SH_PATH_BACKEND_CMD + ' --name ' + SH_PM2_BACKEND_NAME);
     }
+    //start-broker
+    var cmd;
+    if (options.node) {
+        cmd = 'node ' + SH_PATH_BROKER_CMD;
+        // in mock mode ?
+        if (options.mock) {
+            cmd += ' --mock';
+        }
+    } else {
+        cmd = 'pm2 start ' + SH_PATH_BROKER_CMD + ' --name ' + SH_PM2_BROKER_NAME;
+        if (options.mock) {
+            cmd += ' -- --mock';
+        }
+    }
+    // exec broker command
     exec(cmd);
 }
 
@@ -88,6 +102,7 @@ function InitEnvConfiguration() {
     // init env
     process.env['SH_MONGO_DB'] = SH_MONGO_DB;
     process.env['SH_WEB_PORT'] = SH_WEB_PORT;
+    process.env['SH_PATH_FRONTENT_DIST'] = SH_PATH_FRONTENT_DIST;
 
     process.env['SH_WEB_PORT'] = SH_MQTT_PORT;
     process.env['SH_MQTT_HOST_NAME'] = SH_MQTT_HOST_NAME;
