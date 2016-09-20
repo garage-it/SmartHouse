@@ -15,25 +15,25 @@ program.version(packageJSON.version);
 /**
 * Init pm2 magic constants
 */
-const SH_PM2_BACKEND_NAME = 'smart-house-backend';
-const SH_PM2_BROKER_NAME = 'smart-house-broker';
+const PM2_BACKEND_NAME = 'smart-house-backend';
+const PM2_BROKER_NAME = 'smart-house-broker';
 
 // Mongo DB configuration
-var SH_MONGO_DB;
+var MONGO_DB;
 
 // PATH to other libraries distribution
 var SH_PATH_FRONTENT_DIST;
-var SH_PATH_BACKEND_CMD;
-var SH_PATH_BROKER_CMD;
+var PATH_BACKEND_CMD;
+var PATH_BROKER_CMD;
 
 // WEB Configuration
 var SH_WEB_PORT;
 
 // MQTT Configuration
-var SH_MQTT_PORT;
-var SH_MQTT_HOST_NAME;
-var SH_MQTT_USER_NAME;
-var SH_MQTT_PASSWORD;
+var MQTT_PORT;
+var MQTT_HOST_NAME;
+var MQTT_USER_NAME;
+var MQTT_PASSWORD;
 
 program
     .command('start [options]')
@@ -57,21 +57,21 @@ function startAction(cmd, options) {
 
     //start-backend
     if (options.node) {
-        console.log('command :', 'node ' + SH_PATH_BACKEND_CMD);
-        exec('node ' + SH_PATH_BACKEND_CMD);
+        console.log('command :', 'node ' + PATH_BACKEND_CMD);
+        exec('node ' + PATH_BACKEND_CMD);
     } else {
-        exec('pm2 start ' + SH_PATH_BACKEND_CMD + ' --name ' + SH_PM2_BACKEND_NAME);
+        exec('pm2 start ' + PATH_BACKEND_CMD + ' --name ' + PM2_BACKEND_NAME);
     }
     //start-broker
     var cmd;
     if (options.node) {
-        cmd = 'node ' + SH_PATH_BROKER_CMD;
+        cmd = 'node ' + PATH_BROKER_CMD;
         // in mock mode ?
         if (options.mock) {
             cmd += ' --mock';
         }
     } else {
-        cmd = 'pm2 start ' + SH_PATH_BROKER_CMD + ' --name ' + SH_PM2_BROKER_NAME;
+        cmd = 'pm2 start ' + PATH_BROKER_CMD + ' --name ' + PM2_BROKER_NAME;
         if (options.mock) {
             cmd += ' -- --mock';
         }
@@ -82,32 +82,32 @@ function startAction(cmd, options) {
 
 function InitEnvConfiguration() {
     // Mongo DB configuration
-    SH_MONGO_DB = process.env['SH_MONGO_DB'] || 'mongodb://localhost/db';
+    MONGO_DB = process.env['MONGO_DB'] || 'mongodb://localhost/db';
 
     // PATH to other libraries distribution
     SH_PATH_FRONTENT_DIST = process.env['SH_PATH_FRONTENT_DIST'] || path.resolve('./node_modules/smart-house-frontend/dist'); //'../SmartHouse-frontend/dist'
-    SH_PATH_BACKEND_CMD =  process.env['SH_PATH_BACKEND_CMD'] || path.resolve('./node_modules/smart-house-backend'); //'../SmartHouse-backend'
-    SH_PATH_BROKER_CMD = process.env['SH_PATH_BROKER_CMD'] || path.resolve('./node_modules/smart-house-broker'); //'../SmartHouse-broker'
+    PATH_BACKEND_CMD =  process.env['PATH_BACKEND_CMD'] || path.resolve('./node_modules/smart-house-backend'); //'../SmartHouse-backend'
+    PATH_BROKER_CMD = process.env['PATH_BROKER_CMD'] || path.resolve('./node_modules/smart-house-broker'); //'../SmartHouse-broker'
 
     // WEB Configuration
     SH_WEB_PORT = process.env['SH_WEB_PORT'] || '8080';
 
     // MQTT Configuration
-    SH_MQTT_PORT = process.env['SH_WEB_PORT'] || '1883';
-    SH_MQTT_HOST_NAME = process.env['SH_MQTT_HOST_NAME'] || 'localhost';
-    SH_MQTT_USER_NAME = process.env['SH_MQTT_USER_NAME'] || 'USERNAME';
-    SH_MQTT_PASSWORD = process.env ['SH_MQTT_PASSWORD']  || 'PASSWORD';
+    MQTT_PORT = process.env['MQTT_PORT'] || '1883';
+    MQTT_HOST_NAME = process.env['MQTT_HOST_NAME'] || 'localhost';
+    MQTT_USER_NAME = process.env['MQTT_USER_NAME'] || 'USERNAME';
+    MQTT_PASSWORD = process.env ['MQTT_PASSWORD']  || 'PASSWORD';
 
 
     // init env
-    process.env['SH_MONGO_DB'] = SH_MONGO_DB;
+    process.env['MONGO_DB'] = MONGO_DB;
     process.env['SH_WEB_PORT'] = SH_WEB_PORT;
     process.env['SH_PATH_FRONTENT_DIST'] = SH_PATH_FRONTENT_DIST;
 
-    process.env['SH_WEB_PORT'] = SH_MQTT_PORT;
-    process.env['SH_MQTT_HOST_NAME'] = SH_MQTT_HOST_NAME;
-    process.env['SH_MQTT_USER_NAME'] = SH_MQTT_USER_NAME;
-    process.env ['SH_MQTT_PASSWORD']  = SH_MQTT_PASSWORD;
+    process.env['MQTT_PORT'] = MQTT_PORT;
+    process.env['MQTT_HOST_NAME'] = MQTT_HOST_NAME;
+    process.env['MQTT_USER_NAME'] = MQTT_USER_NAME;
+    process.env ['MQTT_PASSWORD']  = MQTT_PASSWORD;
 }
 
 program
@@ -116,8 +116,8 @@ program
     .action(stopAction);
 
 function stopAction() {
-    exec('pm2 delete ' + SH_PM2_BACKEND_NAME );
-    exec('pm2 delete ' + SH_PM2_BROKER_NAME );
+    exec('pm2 delete ' + PM2_BACKEND_NAME );
+    exec('pm2 delete ' + PM2_BROKER_NAME );
 }
 
 program
@@ -135,8 +135,8 @@ program
     .action(restartAction);
 
 function restartAction() {
-    exec('pm2 restart ' + SH_PM2_BACKEND_NAME);
-    exec('pm2 restart ' + SH_PM2_BROKER_NAME);
+    exec('pm2 restart ' + PM2_BACKEND_NAME);
+    exec('pm2 restart ' + PM2_BROKER_NAME);
 }
 
 program.parse(process.argv);
