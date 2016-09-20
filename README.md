@@ -58,7 +58,7 @@ Via environment variables, by creating
 .evn file – otherwise default settings will apply
 
 ### Mongo DB configuration:
-    * MONGO_DB = 'mongodb://localhost/db'    
+    * MONGO = 'mongodb://localhost/db'    
 
 ### PATH to other libraries distribution:
     * SH_PATH_FRONTENT_DIST = './node_modules/smart-house-frontend/dist'
@@ -66,7 +66,7 @@ Via environment variables, by creating
     * PATH_BROKER_CMD = './node_modules/smart-house-broker'
 
 ### WEB Configuration:
-    * SH_WEB_PORT='80'
+    * PORT='80'
 
 ### MQTT Configuration:
     * MQTT_PORT='1883'

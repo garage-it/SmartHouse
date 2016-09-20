@@ -19,15 +19,15 @@ const PM2_BACKEND_NAME = 'smart-house-backend';
 const PM2_BROKER_NAME = 'smart-house-broker';
 
 // Mongo DB configuration
-var MONGO_DB;
+var MONGO;
 
 // PATH to other libraries distribution
-var SH_PATH_FRONTENT_DIST;
+var PATH_FRONTENT_DIST;
 var PATH_BACKEND_CMD;
 var PATH_BROKER_CMD;
 
 // WEB Configuration
-var SH_WEB_PORT;
+var PORT;
 
 // MQTT Configuration
 var MQTT_PORT;
@@ -48,12 +48,12 @@ function startAction(cmd, options) {
     InitEnvConfiguration();
     process.env['ENV_CONFIG'] = 'production';
 
-    var port = SH_WEB_PORT;
+    var mPort = PORT;
     if (options.port && isFinite(parseInt(options.port))) {
-        port = options.port;
+        mPort = options.port;
     }
     // set port to serve the backend
-    process.env['SH_WEB_PORT'] = port;
+    process.env['PORT'] = mPort;
 
     //start-backend
     if (options.node) {
@@ -82,15 +82,15 @@ function startAction(cmd, options) {
 
 function InitEnvConfiguration() {
     // Mongo DB configuration
-    MONGO_DB = process.env['MONGO_DB'] || 'mongodb://localhost/db';
+    MONGO = process.env['MONGO'] || 'mongodb://localhost/db';
 
     // PATH to other libraries distribution
-    SH_PATH_FRONTENT_DIST = process.env['SH_PATH_FRONTENT_DIST'] || path.resolve('./node_modules/smart-house-frontend/dist'); //'../SmartHouse-frontend/dist'
+    PATH_FRONTENT_DIST = process.env['PATH_FRONTENT_DIST'] || path.resolve('./node_modules/smart-house-frontend/dist'); //'../SmartHouse-frontend/dist'
     PATH_BACKEND_CMD =  process.env['PATH_BACKEND_CMD'] || path.resolve('./node_modules/smart-house-backend'); //'../SmartHouse-backend'
     PATH_BROKER_CMD = process.env['PATH_BROKER_CMD'] || path.resolve('./node_modules/smart-house-broker'); //'../SmartHouse-broker'
 
     // WEB Configuration
-    SH_WEB_PORT = process.env['SH_WEB_PORT'] || '8080';
+    PORT = process.env['PORT'] || '8080';
 
     // MQTT Configuration
     MQTT_PORT = process.env['MQTT_PORT'] || '1883';
@@ -100,9 +100,9 @@ function InitEnvConfiguration() {
 
 
     // init env
-    process.env['MONGO_DB'] = MONGO_DB;
-    process.env['SH_WEB_PORT'] = SH_WEB_PORT;
-    process.env['SH_PATH_FRONTENT_DIST'] = SH_PATH_FRONTENT_DIST;
+    process.env['MONGO'] = MONGO;
+    process.env['PORT'] = PORT;
+    process.env['PATH_FRONTENT_DIST'] = PATH_FRONTENT_DIST;
 
     process.env['MQTT_PORT'] = MQTT_PORT;
     process.env['MQTT_HOST_NAME'] = MQTT_HOST_NAME;
