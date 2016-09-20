@@ -2,11 +2,14 @@
   "name": "smart-house",
   "version": "0.1.0",
   "description": "Smart House",
+  "main": "index.js",
+  "bin": "bin/index.js",
   "scripts": {
-    "start": "npm-run-all --parallel frontend backend broker",
-    "frontend": "cd node_modules/smart-house-frontend && smart-house-frontend",
-    "backend": "cd node_modules/smart-house-backend && smart-house-backend",
-    "broker": "cd node_modules/smart-house-broker && smart-house-broker"
+    "start": "node ./index.js start",
+    "stop": "node ./index.js stop",
+    "restart": "node ./index.js restart",
+    "status": "node ./index.js status",
+    "index": "node ./index.js"
   },
   "repository": {
     "type": "git",
@@ -17,19 +20,19 @@
     "house",
     "IoT"
   ],
-  "author": "Yurii Sorokin <fortyin@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/garage-it/SmartHouse/issues"
   },
   "homepage": "https://github.com/garage-it/SmartHouse#readme",
   "engines": {
-    "node": ">=5"
-  },
-  "devDependencies": {
-    "npm-run-all": "^2.2.2"
+    "node": "5.x.x"
   },
   "dependencies": {
+    "commander": "^2.9.0",
+    "shelljs": "^0.7.0",
+    "dotenv": "^2.0.0",
+
     "smart-house-backend": "github:garage-it/SmartHouse-backend",
     "smart-house-broker": "github:garage-it/SmartHouse-broker",
     "smart-house-frontend": "github:garage-it/SmartHouse-frontend"
