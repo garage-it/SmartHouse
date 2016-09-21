@@ -219,3 +219,4 @@ node/
 .node_repl_history
 
 ### Project ###
+.env
