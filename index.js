@@ -45,7 +45,7 @@ program
 
 function startAction(cmd, options) {
     // Setup env varibles
-    InitEnvConfiguration();
+    // InitEnvConfiguration();
     process.env['ENV_CONFIG'] = 'production';
 
     var mPort = PORT;
