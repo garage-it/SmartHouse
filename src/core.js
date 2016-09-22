@@ -1,65 +1,79 @@
-const context = require('./context');
-const pluginConfig = require('./smart-house');
 const _ = require('underscore');
 
-const _plugins = [];
-const _options = {};
+module.exports = function(pluginConfig, program) {
+    const _plugins = [];
+    const _options = {};
+    const SmartHouseCore = {};
+    const Commander = program;
 
-const SmartHouseCore = {
-    // public interface
-    getContext: function() {
-        return context;
-    },
+    const context = require('./context')(SmartHouseCore, Commander);
 
-    //  Register all plugins
-    init: function() {
-        var plugins = pluginConfig().plugins || [];
-        var context = SmartHouseCore.getContext();
+    Object.assign(SmartHouseCore,  {
 
-        if (Array.isArray()) {
-            plugins.forEach(function(plugin) {
-                if (!_.isFunction(plugin)) {
-                    console.error('Plugin should return fucntion');
-                    return;
-                }
+        getContext: function() {
+            return context;
+        },
 
-                var pluginInstance = plugin(context);
+        //  Register all plugins
+        init: function() {
+            console.log('core.init');
 
-                if (!pluginInstance.name || ! _.isFunction(pluginInstance.init) ||
-                ! _.isFunction(pluginInstance.start) || !_.isFunction(pluginInstance.stop)) {
-                    console.error('Plugin does not support required interface');
-                    return;
-                }
-                // Reqister plugin
-                _plugins.push(pluginInstance);
+            var plugins = pluginConfig.plugins || [];
+            var context = SmartHouseCore.getContext();
+
+            if (Array.isArray(plugins)) {
+                plugins.forEach(function(plugin) {
+                    if (!_.isFunction(plugin)) {
+                        console.error('Plugin should return fucntion');
+                        return;
+                    }
+
+                    var pluginInstance = plugin(context);
+
+                    if (!pluginInstance.name || ! _.isFunction(pluginInstance.init) ||
+                    ! _.isFunction(pluginInstance.start) || !_.isFunction(pluginInstance.stop)) {
+                        console.error('Plugin does not support required interface');
+                        return;
+                    }
+                    // Reqister plugin
+                    _plugins.push(pluginInstance);
+                });
+            }
+
+            _plugins.forEach(function(pluginInstance) {
+                pluginInstance.init();
+            });
+        },
+
+        start: function() {
+            console.log('core.start');
+            _plugins.forEach(function(pluginInstance) {
+                pluginInstance.start();
+            });
+        },
+
+        stop: function() {
+            console.log('core.stop');
+            _plugins.forEach(function(pluginInstance) {
+                pluginInstance.stop();
+            });
+        },
+
+        restart: function() {
+            console.log('core.restart');
+            SmartHouseCore.stop();
+            SmartHouseCore.start();
+        },
+
+        destroy: function() {
+            console.log('core.destroy');
+            SmartHouseCore.stop();
+
+            _plugins.forEach(function(pluginInstance) {
+                pluginInstance.destroy();
             });
         }
+    });
 
-        _plugins.forEach(function(pluginInstance) {
-            console.log('Initialize ' + pluginInstance.name + '.... ');
-            pluginInstance.init();
-        });
-    },
-
-    start: function() {
-        _plugins.forEach(function(pluginInstance) {
-            console.log('Starting ' + pluginInstance.name);
-            pluginInstance.start();
-        });
-    },
-
-    stop: function() {
-        _plugins.forEach(function(pluginInstance) {
-            console.log('Stoping ' + pluginInstance.name);
-            pluginInstance.stop();
-        });
-    },
-
-    restart: function() {
-        SmartHouseCore.stop();
-        SmartHouseCore.start();
-    }
+    return SmartHouseCore;
 };
-
-
-module.export = SmartHouseCore;

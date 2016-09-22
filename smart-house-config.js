@@ -1,8 +1,7 @@
-const core = require('/src/core.js');
-const pluginTimeseries = require('../plugins/plugin-time-series');
-const pluginBackend = require('../plugins/plugin-backend');
-const pluginFrontend = require('../plugins/plugin-frontend');
-const pluginBroker = require('../plugins/plugin-broker');
+const pluginTimeSeries = require('./plugins/plugin-time-series');
+const pluginBackend = require('./plugins/plugin-backend');
+const pluginFrontend = require('./plugins/plugin-frontend');
+const pluginBroker = require('./plugins/plugin-broker');
 
 module.exports = function() {
     return {
@@ -18,7 +17,7 @@ module.exports = function() {
                 MQTT_USER_NAME: 'USERNAME',
                 MQTT_PASSWORD: 'PASSWORD'
             }),
-            pluginTimeseries({
+            pluginTimeSeries({
                 interval: 1000
             })
         ]

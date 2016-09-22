@@ -1,7 +1,7 @@
 const path = require('path');
 
-module.export = {
-    SMART_HOUSE_PREFIX:  '',
+module.exports = {
+    SMART_HOUSE_PREFIX:  'smart-house',
 
     PATH_FRONTENT_DIST: path.resolve('./node_modules/smart-house-frontend/dist'),
     PATH_BACKEND_CMD: path.resolve('./node_modules/smart-house-backend'),

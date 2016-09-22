@@ -1,19 +1,49 @@
-const configuration = require('./configuration.js');
+const EventEmitter = require('events');
+const defaultConfig = require('./configuration');
+const exec = require('shelljs').exec;
 
-module.export = {
+module.exports = function(core, commander, startCommand) {
 
-    // register main otions to the program
-    getOptions: function() {
-    },
+    const configuration = Object.assign({}, defaultConfig);
+    const eventBus = new EventEmitter();
 
-    registerOption: function() {
-    },
+    // Add node runner as option
+    // startCommand.option('-n, --node', 'use common nodejs as start enviroment insted of pm2');
 
-    getConfig: function() {
-        return configuration;
-    },
+    // Init
+    eventBus.on('restart', function() {
+        core.restart();
+    });
 
-    setConfigValue(key, value) {
-        configuration[key] = value;
-    }
+    //
+    return  {
+        getEventBus: function() {
+            return eventBus;
+        },
+
+        startScript: function(script, name) {
+            // pm2 start script
+        },
+
+        stopScript: function(script, name) {
+            // pm2 stop name
+        },
+
+        // register main otions to the program
+        getOptions: function() {
+        },
+
+        addStartOption: function(name, description, parser) {
+            console.log('registerOption');
+            commander.option.call(commander, name, description, parser);
+        },
+
+        getConfig: function() {
+            return configuration;
+        },
+
+        setConfigValue(key, value) {
+            configuration[key] = value;
+        }
+    };
 };
