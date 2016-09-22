@@ -58,20 +58,20 @@ function startAction(cmd, options) {
     //start-backend
     if (options.node) {
         console.log('command :', 'node ' + PATH_BACKEND_CMD);
-        exec('node ' + PATH_BACKEND_CMD);
+        exec('node `' + PATH_BACKEND_CMD + '`');
     } else {
-        exec('pm2 start ' + PATH_BACKEND_CMD + ' --name ' + PM2_BACKEND_NAME);
+        exec('pm2 start `' + PATH_BACKEND_CMD + '` --name ' + PM2_BACKEND_NAME);
     }
     //start-broker
     var cmd;
     if (options.node) {
-        cmd = 'node ' + PATH_BROKER_CMD;
+        cmd = 'node `' + PATH_BROKER_CMD + '`';
         // in mock mode ?
         if (options.mock) {
             cmd += ' --mock';
         }
     } else {
-        cmd = 'pm2 start ' + PATH_BROKER_CMD + ' --name ' + PM2_BROKER_NAME;
+        cmd = 'pm2 start `' + PATH_BROKER_CMD + '` --name ' + PM2_BROKER_NAME;
         if (options.mock) {
             cmd += ' -- --mock';
         }
