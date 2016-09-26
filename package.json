@@ -9,7 +9,11 @@
     "stop": "node ./index.js stop",
     "restart": "node ./index.js restart",
     "status": "node ./index.js status",
-    "index": "node ./index.js"
+    "logs": "node ./index.js log",
+    "index": "node ./index.js",
+
+    "lint": "eslint ./*.js",
+    "lintfix": "eslint ./*.js --fix"
   },
   "repository": {
     "type": "git",
@@ -34,8 +38,14 @@
     "dotenv": "^2.0.0",
     "colors": "^1.1.2",
 
-    "smart-house-backend": "github:garage-it/SmartHouse-backend",
-    "smart-house-broker": "github:garage-it/SmartHouse-broker",
-    "smart-house-frontend": "github:garage-it/SmartHouse-frontend"
+    "smart-house-backend": "^0.1.0",
+    "smart-house-broker": "^0.1.0",
+    "smart-house-frontend": "^0.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^2.7.0",
+    "eslint-config-standard": "^5.1.0",
+    "eslint-plugin-promise": "^1.1.0",
+    "eslint-plugin-standard": "^1.3.2"
   }
 }

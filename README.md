@@ -1,9 +1,9 @@
 # SmartHouse
 <span class="badge-npmversion"><a href="https://npmjs.org/package/smart-house" title="View this project on NPM"><img src="https://img.shields.io/npm/v/badges.svg" alt="NPM version" /></a></span>
 
-Installation:
-* install mongodb & pm2
-* install all required dependencies
+## Installation:
+* Install nodejs v5.x.x, npm, mongodb & pm2
+* Install all required dependencies
 * configure enviroment (If default configuration is not suitable)
 * run mongodb
 * run the script
@@ -13,18 +13,21 @@ Install pm2 globally
 $ npm install pm2 -g
 ```
 
-Install minimal required project dependencies:
+Install package with minimal required project dependencies:
 ```sh
 # Download dependencies and build frontend part
-$ npm install --production
+$ git clone https://github.com/garage-it/SmartHouse.git
+$ cd SmartHouse
+$ npm install
 ```
 
-To start mongodb:
+To start mongodb as a service:
 ```sh
 $ sudo service mongodb start
 ```
 
-To start backend:
+## How to use:
+- To start backend:
 ```sh
 $ npm start
 ```
@@ -33,30 +36,32 @@ Start options:
     --mock -will start broker with mock data
     --port <n> -will start backend on specified port (8080 is default)
     --node -will start jobs via node, but not pm2
+    --log -start process in node mode and out broker logs
 
-Example (start backend with mock data):
+Example (start backend with mock data and console output):
 ```sh
-$ npm start -- --mock
+$ npm start -- --mock --log
 ```
 
-To get list of all options start backend via node exec:
+- To get help (list of all commands & options) :
 ```sh
 $ npm run index
 ```
 
-To stop backend:
+- To stop backend:
 ```sh
 $ npm stop
 ```
 
-To get status:
+- To get status:
 ```sh
 $ npm run status
 ```
 
-## Configure enviroment :
-Via environment variables, by creating
-.evn file – otherwise default settings will apply
+## How to configure environment :
+To override default configuration (listed below):
+- set custom environment variables
+- create .evn file based on .env.example
 
 ### Mongo DB configuration:
     * MONGO = 'mongodb://localhost/db'    
