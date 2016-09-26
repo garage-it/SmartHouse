@@ -46,9 +46,8 @@ program
 
 
 function startAction(cmd, options) {
-    if (!options.node && !options.log) {
-        stopAction();
-    }
+    // Stop runing actions (if such in use)
+    stopAction();
 
     // Setup env varibles
     InitEnvConfiguration();
