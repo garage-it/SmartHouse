@@ -33,10 +33,10 @@ $ npm start
 ```
 
 Start options:
-    --mock -will start broker with mock data
-    --port <n> -will start backend on specified port (8080 is default)
-    --node -will start jobs via node, but not pm2
-    --log -start process in node mode and out broker logs
+-    --mock -will start broker with mock data
+-    --port <n> -will start backend on specified port (8080 is default)
+-    --node -will start jobs via node, but not pm2
+-    --log -start process in node mode and out broker logs
 
 Example (start backend with mock data and console output):
 ```sh
