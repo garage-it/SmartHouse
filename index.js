@@ -40,10 +40,15 @@ program
     .description('start backend')
     .option('-m, --mock', 'will start broker with mock data')
     .option('-n, --node', 'will start jobs via node, but not pm2')
+    .option('-l, --log', 'start process in node mode and out broker logs')
     .option('-p, --port <n>', 'will start backend on specified port (8080 is default)', parseInt)
     .action(startAction);
 
+
 function startAction(cmd, options) {
+    // Stop runing actions (if such in use)
+    stopAction();
+
     // Setup env varibles
     InitEnvConfiguration();
     process.env['ENV_CONFIG'] = 'production';
@@ -56,28 +61,21 @@ function startAction(cmd, options) {
     process.env['PORT'] = mPort;
 
     //start-backend
-    if (options.node) {
-        console.log('command :', 'node ' + PATH_BACKEND_CMD);
-        exec('node "' + PATH_BACKEND_CMD + '"');
-    } else {
+    if (options.node || options.log) {
+        exec('node "' + PATH_BACKEND_CMD + '"', {async:true});
+        var shellcmd = 'node "' + PATH_BROKER_CMD + '"' + (options.mock ? ' --mock' : '') + (options.log ? ' --log' : '');
+        var child = exec(shellcmd, {async:true});
+        if (options.log) {
+            child.stdout.on('data', function(data) {
+                /* eslint-disable no-console */
+                console.log(data);
+                /* eslint-enable no-console */
+            });
+        }
+    }  else {
         exec('pm2 start "' + PATH_BACKEND_CMD + '" --name ' + PM2_BACKEND_NAME);
+        exec('pm2 start "' + PATH_BROKER_CMD + '" --name ' + PM2_BROKER_NAME + (options.mock ? ' --mock' : ''));
     }
-    //start-broker
-    var cmd;
-    if (options.node) {
-        cmd = 'node "' + PATH_BROKER_CMD + '"';
-        // in mock mode ?
-        if (options.mock) {
-            cmd += ' --mock';
-        }
-    } else {
-        cmd = 'pm2 start "' + PATH_BROKER_CMD + '" --name ' + PM2_BROKER_NAME;
-        if (options.mock) {
-            cmd += ' -- --mock';
-        }
-    }
-    // exec broker command
-    exec(cmd);
 }
 
 function InitEnvConfiguration() {
@@ -138,6 +136,13 @@ function restartAction() {
     exec('pm2 restart ' + PM2_BACKEND_NAME);
     exec('pm2 restart ' + PM2_BROKER_NAME);
 }
+
+program
+    .command('logs')
+    .description('Restart services')
+    .action(function() {
+        exec('pm2 logs');
+    });
 
 program.parse(process.argv);
 
