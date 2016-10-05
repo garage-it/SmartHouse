@@ -10,10 +10,11 @@
     "restart": "node ./index.js restart",
     "status": "node ./index.js status",
     "logs": "node ./index.js log",
-    "index": "node ./index.js",
+    "options": "node ./index.js",
 
-    "lint": "eslint ./*.js",
-    "lintfix": "eslint ./*.js --fix"
+    "verify": "npm run lint",
+    "lint": "eslint ./*.js src/*.js plugins/*.js",
+    "lintfix": "eslint ./*.js src/*.js plugins/*.js --fix"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,9 @@
     "shelljs": "^0.7.0",
     "dotenv": "^2.0.0",
     "colors": "^1.1.2",
+    "lodash": "^4.16.3",
+    "mongodb": "^2.2.10",
+    "bluebird": "^3.4.6",
 
     "smart-house-backend": "^0.1.0",
     "smart-house-broker": "^0.1.0",

@@ -1,7 +1,10 @@
-var colors = require('colors');
+const path = require('path');
+
+// const backend = require(path.resolve('../SmartHouse-backend'));
+//const backend = require(path.resolve('../SmartHouse-backend'));
 
 module.exports = function(config) {
-    // context
+    // Context
     return function(context) {
         const plugin = {};
         Object.assign(plugin, {
@@ -16,8 +19,8 @@ module.exports = function(config) {
 };
 
 function _init(config, context) {
-    context.addStartOption('-p, --port <n>', 'start backend on specified port (8080 is default)', parseInt);
-    console.log('Initialize ' + this.name, '\u2713'.green);
+    // context.addStartOption('-p, --port <n>', 'start backend on specified port (8080 is default)', parseInt);
+    // console.log('Initialize ' + this.name, '\u2713'.green);
 }
 
 function _start(config, context) {

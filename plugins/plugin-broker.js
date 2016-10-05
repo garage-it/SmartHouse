@@ -1,3 +1,5 @@
+// @FIXME:: move to
+
 module.exports = function(config) {
     // context
     return function(context) {
@@ -13,18 +15,18 @@ module.exports = function(config) {
     };
 };
 
-function _init(config, context) {
+function _init(/* config, context */) {
     console.log('Initialize ' + this.name, '\u2713'.green);
 }
 
-function _start(config, context) {
+function _start(/* config, context */) {
     console.log('Start ' + this.name, '\u2713'.green);
 }
 
-function _stop(config, context) {
+function _stop(/* config, context */) {
     console.log('Stop ' + this.name, '\u2713'.green);
 }
 
-function _destroy(config, context) {
+function _destroy(/* config, context */) {
     console.log('Destroy ' + this.name, '\u2713'.green);
 }

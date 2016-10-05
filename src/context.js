@@ -1,10 +1,10 @@
 const EventEmitter = require('events');
 const defaultConfig = require('./configuration');
-const exec = require('shelljs').exec;
+// const exec = require('shelljs').exec;
 
-module.exports = function(core, commander, startCommand) {
+module.exports = function(config, core, commander) {
 
-    const configuration = Object.assign({}, defaultConfig);
+    const configuration = Object.assign({}, defaultConfig, config);
     const eventBus = new EventEmitter();
 
     // Add node runner as option
@@ -16,16 +16,16 @@ module.exports = function(core, commander, startCommand) {
     });
 
     //
-    return  {
+    const context = {
         getEventBus: function() {
             return eventBus;
         },
 
-        startScript: function(script, name) {
+        startScript: function(/* script, name */) {
             // pm2 start script
         },
 
-        stopScript: function(script, name) {
+        stopScript: function(/* script, name */) {
             // pm2 stop name
         },
 
@@ -34,7 +34,6 @@ module.exports = function(core, commander, startCommand) {
         },
 
         addStartOption: function(name, description, parser) {
-            console.log('registerOption');
             commander.option.call(commander, name, description, parser);
         },
 
@@ -42,8 +41,13 @@ module.exports = function(core, commander, startCommand) {
             return configuration;
         },
 
+        setStaticMountPoint: function(location) {
+            context.setConfigValue('PATH_FRONTENT_DIST', location);
+        },
+
         setConfigValue(key, value) {
             configuration[key] = value;
         }
     };
+    return context;
 };

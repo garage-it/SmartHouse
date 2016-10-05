@@ -2,38 +2,51 @@
 const fs = require('fs');
 const program = require('commander');
 const config = require('./smart-house-config');
+/* eslint-disable no-unused-vars */
+const colors = require('colors');
+/* eslint-disable no-unused-vars */
 
 // Init program version
 const packageJSON = JSON.parse(fs.readFileSync('package.json'));
 program.version(packageJSON.version);
 
-const core = require('./src/core')(config(), program, startCommand);
-
-const startCommand = program
+var startCommand = program
     .command('start')
-    .description('Start smart house')
+    .description('Start smart house');
 
 // Init smart-house core
-core.init();
+var core = require('./src/core')(config(), program, startCommand);
 
-    startCommand.option('-m, --mock', 'will start broker with mock data')
+startCommand.option('-m, --mock', 'will start broker with mock data')
     .action(function() {
-        core.start();
+        core.start().catch(function(error) {
+            /* eslint-disable no-console */
+            console.log(error.red);
+            /* eslint-enable no-console */
+        });
     });
-
 
 program
     .command('stop')
     .description('Stop smart house')
     .action(function() {
-        core.stop();
+        core.stop().catch(function(error) {
+            /* eslint-disable no-console */
+            console.log(error.red);
+            /* eslint-enable no-console */
+        });
     });
 
 program
     .command('restart')
     .description('Restart smart house')
     .action(function() {
-        core.stop();
+        core.restart().catch(function(error) {
+            /* eslint-disable no-console */
+            console.log(error.red);
+            /* eslint-enable no-console */
+        });
+    });
 
 program.parse(process.argv);
 

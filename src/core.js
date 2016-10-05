@@ -1,12 +1,13 @@
-const _ = require('underscore');
+const _ = require('lodash');
+const Promise = require('bluebird');
 
 module.exports = function(pluginConfig, program) {
+
     const _plugins = [];
-    const _options = {};
     const SmartHouseCore = {};
     const Commander = program;
 
-    const context = require('./context')(SmartHouseCore, Commander);
+    const context = require('./context')(pluginConfig.configuration || {}, SmartHouseCore, Commander);
 
     Object.assign(SmartHouseCore,  {
 
@@ -14,66 +15,81 @@ module.exports = function(pluginConfig, program) {
             return context;
         },
 
-        //  Register all plugins
-        init: function() {
-            console.log('core.init');
-
-            var plugins = pluginConfig.plugins || [];
-            var context = SmartHouseCore.getContext();
-
-            if (Array.isArray(plugins)) {
-                plugins.forEach(function(plugin) {
-                    if (!_.isFunction(plugin)) {
-                        console.error('Plugin should return fucntion');
-                        return;
-                    }
-
-                    var pluginInstance = plugin(context);
-
-                    if (!pluginInstance.name || ! _.isFunction(pluginInstance.init) ||
-                    ! _.isFunction(pluginInstance.start) || !_.isFunction(pluginInstance.stop)) {
-                        console.error('Plugin does not support required interface');
-                        return;
-                    }
-                    // Reqister plugin
-                    _plugins.push(pluginInstance);
-                });
+        getInitPromise: function() {
+            if (! SmartHouseCore.initResult) {
+                SmartHouseCore.initResult = InitSmartHouseCore();
             }
-
-            _plugins.forEach(function(pluginInstance) {
-                pluginInstance.init();
-            });
+            return SmartHouseCore.initResult;
         },
 
         start: function() {
-            console.log('core.start');
-            _plugins.forEach(function(pluginInstance) {
-                pluginInstance.start();
+            return SmartHouseCore.getInitPromise().then(function() {
+                return runPluginSequence(_plugins, 'start');
             });
         },
 
         stop: function() {
-            console.log('core.stop');
-            _plugins.forEach(function(pluginInstance) {
-                pluginInstance.stop();
+            return SmartHouseCore.getInitPromise().then(function() {
+                return runPluginSequence(_plugins, 'stop');
             });
         },
 
         restart: function() {
-            console.log('core.restart');
-            SmartHouseCore.stop();
-            SmartHouseCore.start();
+            return SmartHouseCore.getInitPromise().then(function() {
+                return runPluginSequence(_plugins, 'stop');
+            }).then(function() {
+                return runPluginSequence(_plugins, 'start');
+            });
         },
 
         destroy: function() {
-            console.log('core.destroy');
-            SmartHouseCore.stop();
-
-            _plugins.forEach(function(pluginInstance) {
-                pluginInstance.destroy();
+            return SmartHouseCore.getInitPromise().then(function() {
+                return runPluginSequence(_plugins, 'stop');
+            }).then(function() {
+                return runPluginSequence(_plugins, 'destroy');
             });
         }
     });
 
+
+    function InitSmartHouseCore() {
+        var plugins = pluginConfig.plugins || [];
+        var context = SmartHouseCore.getContext();        
+
+        if (!Array.isArray(plugins)) {
+            return Promise.reject('Plugins expected to be array');
+        }
+
+        // Inititalize plugins: check (@TODO: refactor following code)
+        return Promise.all(plugins.map(function(plugin) {
+            if (!_.isFunction(plugin)) {
+                return Promise.reject('Plugin should return fucntion');
+            }
+
+            var pluginInstance = plugin(context);
+
+            if (!pluginInstance.name || ! _.isFunction(pluginInstance.init) ||
+            ! _.isFunction(pluginInstance.start) || !_.isFunction(pluginInstance.stop)) {
+                return Promise.reject('Plugin ' + (pluginInstance.name || '') + 'does not support required interface');
+            }
+
+            _plugins.push(pluginInstance);
+            return Promise.resolve();
+
+        })).then(function() {
+            return runPluginSequence(_plugins, 'init');
+        });
+    }
+
     return SmartHouseCore;
 };
+
+
+function runPluginSequence(pluginList, method) {
+    var tasks = pluginList.map(function(pluginInstance) {
+        return (pluginInstance[method] || function() {});
+    });
+    return tasks.reduce(function(cur, next) {
+        return cur.then(next);
+    }, Promise.resolve());
+}
