@@ -16,17 +16,17 @@ module.exports = function(config) {
 };
 
 function _init(/* config, context */) {
-    console.log('Initialize ' + this.name, '\u2713'.green);
+    //console.log('Initialize ' + this.name, '\u2713'.green);
 }
 
 function _start(/* config, context */) {
-    console.log('Start ' + this.name, '\u2713'.green);
+    //console.log('Start ' + this.name, '\u2713'.green);
 }
 
 function _stop(/* config, context */) {
-    console.log('Stop ' + this.name, '\u2713'.green);
+    //console.log('Stop ' + this.name, '\u2713'.green);
 }
 
 function _destroy(/* config, context */) {
-    console.log('Destroy ' + this.name, '\u2713'.green);
+    //console.log('Destroy ' + this.name, '\u2713'.green);
 }

@@ -2,4 +2,4 @@
 
 const exec = require('shelljs').exec;
 
-exec('npm index');
+exec('npm options');

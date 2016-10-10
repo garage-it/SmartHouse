@@ -54,7 +54,7 @@ module.exports = function(pluginConfig, program) {
 
     function InitSmartHouseCore() {
         var plugins = pluginConfig.plugins || [];
-        var context = SmartHouseCore.getContext();        
+        var context = SmartHouseCore.getContext();
 
         if (!Array.isArray(plugins)) {
             return Promise.reject('Plugins expected to be array');
@@ -84,12 +84,22 @@ module.exports = function(pluginConfig, program) {
     return SmartHouseCore;
 };
 
-
 function runPluginSequence(pluginList, method) {
-    var tasks = pluginList.map(function(pluginInstance) {
-        return (pluginInstance[method] || function() {});
-    });
-    return tasks.reduce(function(cur, next) {
-        return cur.then(next);
+    return pluginList.reduce(function(cur, pluginInstance) {
+        if (pluginInstance[method]) {
+            return cur.then(pluginInstance[method]).then(function() {
+                if (!isEmptyFunction(pluginInstance[method])) {
+                    /* eslint-disable no-console */
+                    console.log(pluginInstance.name + ': ' + method + ' ' + '\u2713'.green);
+                    /* eslint-enable no-console */
+                }
+            });
+        }
+        return cur;
     }, Promise.resolve());
+}
+
+// Is Function epmty
+function isEmptyFunction(fn) {
+    return (fn.toString().replace(/\s+/g,'').replace(/\n/g,'') === 'function(){}' || fn === _.noop);
 }

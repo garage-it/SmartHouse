@@ -41,6 +41,7 @@
     "lodash": "^4.16.3",
     "mongodb": "^2.2.10",
     "bluebird": "^3.4.6",
+    "pm2": "^2.0.18",
 
     "smart-house-backend": "^0.1.0",
     "smart-house-broker": "^0.1.0",

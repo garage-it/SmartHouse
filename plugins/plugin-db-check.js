@@ -1,6 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
 const Promise = require('bluebird');
-const _ = require('lodash');
 
 module.exports = function(config) {
     // context
@@ -9,9 +8,9 @@ module.exports = function(config) {
         Object.assign(plugin, {
             name: 'smart-house-db-check',
             init: _init.bind(plugin, config, context),
-            start: _.noop,
-            stop: _.noop,
-            destroy: _.noop
+            start: function() {},
+            stop: function() {},
+            destroy: function() {}
         });
         return plugin;
     };
@@ -26,8 +25,7 @@ function _init(config, context) {
                 db.close();
             }
             if (err || !db) {
-                var isWin = /^win/.test(process.platform);
-                if (isWin) {
+                if (process.platform === 'win32' || process.platform === 'win64') {
                     reject('Connection to MongoDB failed.\n' + 'Connection string: ' + coreConfig.MONGO + '\n' +
                     'Most likely you forgot to run mongo\n'+
                     'e.g. to run mongo: c:\\Program Files\\MongoDB\\Server\\3.2\\bin\\mongod.exe');
