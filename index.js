@@ -50,7 +50,7 @@ function startAction(cmd, options) {
     stopAction();
 
     // Setup env varibles
-    InitEnvConfiguration();
+    InitEnvConfiguration(options);
     process.env['ENV_CONFIG'] = 'production';
 
     var mPort = PORT;
@@ -63,22 +63,16 @@ function startAction(cmd, options) {
     //start-backend
     if (options.node || options.log) {
         exec('node "' + PATH_BACKEND_CMD + '"', {async:true});
-        var shellcmd = 'node "' + PATH_BROKER_CMD + '"' + (options.mock ? ' --mock' : '') + (options.log ? ' --log' : '');
+        var shellcmd = 'node "' + PATH_BROKER_CMD + '"' + (options.mock ? ' --mock' : '') + (options.log ? ' --log' : '');        
         var child = exec(shellcmd, {async:true});
-        if (options.log) {
-            child.stdout.on('data', function(data) {
-                /* eslint-disable no-console */
-                console.log(data);
-                /* eslint-enable no-console */
-            });
-        }
+
     }  else {
         exec('pm2 start "' + PATH_BACKEND_CMD + '" --name ' + PM2_BACKEND_NAME);
-        exec('pm2 start "' + PATH_BROKER_CMD + '" --name ' + PM2_BROKER_NAME + (options.mock ? ' --mock' : ''));
+        exec('pm2 start "' + PATH_BROKER_CMD + '" --name ' + PM2_BROKER_NAME + (options.mock ? ' -- --mock' : ''));
     }
 }
 
-function InitEnvConfiguration() {
+function InitEnvConfiguration(options) {
     // Mongo DB configuration
     MONGO = process.env['MONGO'] || 'mongodb://localhost/db';
 
@@ -96,6 +90,9 @@ function InitEnvConfiguration() {
     MQTT_USER_NAME = process.env['MQTT_USER_NAME'] || 'USERNAME';
     MQTT_PASSWORD = process.env ['MQTT_PASSWORD']  || 'PASSWORD';
 
+    if (options.mock) {
+        process.env['EXEC_MOCK'] = 'true';
+    }
 
     // init env
     process.env['MONGO'] = MONGO;
