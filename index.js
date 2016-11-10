@@ -4,7 +4,9 @@ const fs = require('fs');
 const program = require('commander');
 const exec = require('shelljs').exec;
 const path = require('path');
-require('dotenv').config({ path: './smart-house-rc'});
+const settings = require('./lib/settings');
+
+require('dotenv').config({ path: settings.rcFilePath});
 
 /**
 * Init program version
