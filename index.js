@@ -79,9 +79,9 @@ function InitEnvConfiguration(options) {
     MONGO = process.env['MONGO'] || 'mongodb://localhost/db';
 
     // PATH to other libraries distribution
-    PATH_FRONTENT_DIST = process.env['PATH_FRONTENT_DIST'] || path.resolve('./node_modules/smart-house-frontend/dist'); //'../SmartHouse-frontend/dist'
-    PATH_BACKEND_CMD =  process.env['PATH_BACKEND_CMD'] || path.resolve('./node_modules/smart-house-backend'); //'../SmartHouse-backend'
-    PATH_BROKER_CMD = process.env['PATH_BROKER_CMD'] || path.resolve('./node_modules/smart-house-broker'); //'../SmartHouse-broker'
+    PATH_FRONTENT_DIST = process.env['PATH_FRONTENT_DIST'] || require.resolve('./node_modules/smart-house-frontend/dist'); //'../SmartHouse-frontend/dist'
+    PATH_BACKEND_CMD =  process.env['PATH_BACKEND_CMD'] || require.resolve('./node_modules/smart-house-backend'); //'../SmartHouse-backend'
+    PATH_BROKER_CMD = process.env['PATH_BROKER_CMD'] || require.resolve('./node_modules/smart-house-broker'); //'../SmartHouse-broker'
 
     // WEB Configuration
     PORT = process.env['PORT'] || '8080';
