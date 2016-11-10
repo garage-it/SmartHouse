@@ -11,7 +11,7 @@ require('dotenv').config({ path: settings.rcFilePath});
 /**
 * Init program version
 */
-const packageJSON = JSON.parse(fs.readFileSync('package.json'));
+const packageJSON = require('./package.json');
 program.version(packageJSON.version);
 
 /**
