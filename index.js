@@ -1,10 +1,10 @@
-#!/usr/bin/env node
+'use strict';
 
 const fs = require('fs');
 const program = require('commander');
 const exec = require('shelljs').exec;
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config({ path: './smart-house-rc'});
 
 /**
 * Init program version
@@ -63,8 +63,8 @@ function startAction(cmd, options) {
     //start-backend
     if (options.node || options.log) {
         exec('node "' + PATH_BACKEND_CMD + '"', {async:true});
-        var shellcmd = 'node "' + PATH_BROKER_CMD + '"' + (options.mock ? ' --mock' : '') + (options.log ? ' --log' : '');        
-        var child = exec(shellcmd, {async:true});
+        var shellcmd = 'node "' + PATH_BROKER_CMD + '"' + (options.mock ? ' --mock' : '') + (options.log ? ' --log' : '');
+        exec(shellcmd, {async:true});
 
     }  else {
         exec('pm2 start "' + PATH_BACKEND_CMD + '" --name ' + PM2_BACKEND_NAME);
@@ -137,9 +137,11 @@ function restartAction() {
 program
     .command('logs')
     .description('Restart services')
-    .action(function() {
-        exec('pm2 logs');
-    });
+    .action(logsAction);
+
+function logsAction() {
+    exec('pm2 logs');
+}
 
 program.parse(process.argv);
 
