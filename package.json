@@ -1,6 +1,6 @@
 {
   "name": "smart-house",
-  "version": "0.1.2-1",
+  "version": "0.1.2-2",
   "description": "Smart House",
   "main": "index.js",
   "bin": "bin/index.js",
