@@ -3,7 +3,6 @@
 
 ## Installation:
 * Install nodejs v5.x.x, npm, mongodb & pm2
-* Install all required dependencies
 * configure enviroment (If default configuration is not suitable)
 * run mongodb
 * run the script
@@ -16,9 +15,7 @@ $ npm install pm2 -g
 Install package with minimal required project dependencies:
 ```sh
 # Download dependencies and build frontend part
-$ git clone https://github.com/garage-it/SmartHouse.git
-$ cd SmartHouse
-$ npm install
+$ npm install -g smart-house
 ```
 
 To start mongodb as a service:
@@ -29,7 +26,7 @@ $ sudo service mongodb start
 ## How to use:
 - To start backend:
 ```sh
-$ npm start
+$ smart-house start
 ```
 
 Start options:
@@ -40,22 +37,22 @@ Start options:
 
 Example (start backend with mock data and console output):
 ```sh
-$ npm start -- --mock --log
+$ smart-house start -- --mock --log
 ```
 
 - To get help (list of all commands & options) :
 ```sh
-$ npm run index
+$ smart-house
 ```
 
 - To stop backend:
 ```sh
-$ npm stop
+$ smart-house stop
 ```
 
 - To get status:
 ```sh
-$ npm run status
+$ smart-house status
 ```
 
 ## How to configure environment :
