@@ -1,5 +1,6 @@
 # SmartHouse
 <span class="badge-npmversion"><a href="https://npmjs.org/package/smart-house" title="View this project on NPM"><img src="https://img.shields.io/npm/v/badges.svg" alt="NPM version" /></a></span>
+[![Build Status](https://travis-ci.org/garage-it/SmartHouse.svg?branch=master)](https://travis-ci.org/garage-it/SmartHouse)
 
 ## Installation:
 * Install nodejs v5.x.x, npm, mongodb & pm2
