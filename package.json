@@ -36,9 +36,9 @@
     "commander": "^2.9.0",
     "shelljs": "^0.7.0",
     "dotenv": "^2.0.0",
-    "smart-house-backend": "^0.1.0",
+    "smart-house-backend": "^1.0.0",
     "smart-house-broker": "^0.1.0",
-    "smart-house-frontend": "^0.1.0"
+    "smart-house-frontend": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^2.7.0",
